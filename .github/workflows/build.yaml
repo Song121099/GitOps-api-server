@@ -73,9 +73,8 @@ jobs:
       - name: Commit files
         run: |
           cd k8s-manifest-repo
-          git config --global user.email "thdtnqls1210@gmail.com"
-          git config --global user.name "Song121099"
+          git config --global user.email "github-actions@github.com"
+          git config --global user.name "github-actions"
           git commit -am "Update image tag"
           git push -u origin main
-
 
