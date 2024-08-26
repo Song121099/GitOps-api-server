@@ -53,11 +53,7 @@ jobs:
           # Push the Docker image to ECR
           docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
           docker push $ECR_REGISTRY/$ECR_REPOSITORY:latest
-
-  deploy:
-    runs-on: ubuntu-latest
-    needs: build
-    steps:
+          #CD
       - name: Setup Kustomize
         uses: imranismail/setup-kustomize@v1
 
@@ -75,7 +71,8 @@ jobs:
           echo ${{ steps.image-info.outputs.ecr_repository }}
           echo ${{ steps.image-info.outputs.image_tag }}
           cd k8s-manifest-repo/overlays/dev/
-          kustomize edit set image my-app=823796879023.dkr.ecr.ap-northeast-2.amazonaws.com/project-cicd:latest
+          kustomize edit set image \${{ steps.login-ecr.outputs.registry}}/\${{ steps.image-info.outputs.ecr_repository }}=\${{ steps.login-ecr.outputs.registry}}/\${{ steps.image-info.outputs.ecr_repository 
+}}:\${{ steps.image-info.outputs.image_tag }}
           cat kustomization.yaml
 
       - name: Commit files
@@ -83,11 +80,5 @@ jobs:
           cd k8s-manifest-repo
           git config --global user.email "github-actions@github.com"
           git config --global user.name "github-actions"
+          git commit -am "Update image tag"
           git push -u origin main
-      
-      - name: Apply Kubernetes manifests
-        run: |
-          cd k8s-manifest-repo/overlays/dev/
-          kustomize edit fix || true
-          kustomize build . --validate=false > /tmp/kustomize-output.yaml
-          kubectl apply -f /tmp/kustomize-output.yaml
