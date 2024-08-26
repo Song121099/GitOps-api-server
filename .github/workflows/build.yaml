@@ -71,7 +71,7 @@ jobs:
           echo ${{ steps.image-info.outputs.ecr_repository }}
           echo ${{ steps.image-info.outputs.image_tag }}
           cd k8s-manifest-repo/overlays/dev/
-          kustomize edit set image \${{ steps.login-ecr.outputs.registry}}/\${{ steps.image-info.outputs.ecr_repository }}=\${{ steps.login-ecr.outputs.registry}}/\${{ steps.image-info.outputs.ecr_repository }}:\${{ steps.image-info.outputs.image_tag }}
+          kustomize edit set image my-app=823796879023.dkr.ecr.ap-northeast-2.amazonaws.com/project-cicd:latest
           cat kustomization.yaml
 
       - name: Commit files
