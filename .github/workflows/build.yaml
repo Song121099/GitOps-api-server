@@ -85,15 +85,10 @@ jobs:
           git config --global user.name "github-actions"
           git commit -am "Update image tag to ${{ steps.image.outputs.version }}"
           git push -u origin main
-
       
       - name: Apply Kubernetes manifests
         run: |
-          # Kustomize 디렉토리로 이동
           cd k8s-manifest-repo/overlays/dev/
-          # Kustomize 업데이트가 필요하면 실행 (Deprecated 구문 수정)
           kustomize edit fix || true
-          # # Kustomize 빌드 (이미지 업데이트 및 검증)
           kustomize build . --validate=false > /tmp/kustomize-output.yaml
-          # Kustomize 결과를 kubectl을 통해 적용
           kubectl apply -f /tmp/kustomize-output.yaml
