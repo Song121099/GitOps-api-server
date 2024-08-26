@@ -1,25 +1,17 @@
-# nginx 이미지를 사용합니다. 뒤에 tag가 없으면 latest 를 사용합니다.
-FROM nginx:latest
-LABEL Author="joozero@amazon.com"
+# 베이스 이미지로 Python을 사용
+FROM python:3.9-slim
 
-# root에 app 폴더 생성 및 work dir 고정
-RUN mkdir /app
+# 작업 디렉토리를 설정
 WORKDIR /app
 
-# work dir에 build 폴더 생성 /app/build
-RUN mkdir ./build
+# requirements.txt 파일을 복사하고 필요 라이브러리 설치
+COPY requirements.txt .
 
-# host pc의 현재경로의 build 폴더를 workdir 의 build 폴더로 복사
-ADD ./build ./build
+RUN pip install --no-cache-dir -r requirements.txt
 
-# nginx 의 default.conf 를 삭제
-RUN rm /etc/nginx/conf.d/default.conf
+# 현재 디렉토리의 모든 파일을 작업 디렉토리에 복사
+COPY . .
 
-# host pc 의 nginx.conf 를 아래 경로에 복사
-COPY ./nginx.conf /etc/nginx/conf.d
+# FastAPI 서버를 실행하는 명령어
+CMD ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8000"]
 
-# 80 포트 오픈
-EXPOSE 80
-
-# container 실행 시 자동으로 실행할 command. nginx 시작함
-CMD ["nginx", "-g", "daemon off;"]
