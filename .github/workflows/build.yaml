@@ -78,12 +78,12 @@ jobs:
           kustomize edit set image my-app=823796879023.dkr.ecr.ap-northeast-2.amazonaws.com/project-cicd:latest
           cat kustomization.yaml
 
-      - name: Commit updated Kubernetes resources
+      - name: Commit files
         run: |
           cd k8s-manifest-repo
           git config --global user.email "github-actions@github.com"
           git config --global user.name "github-actions"
-          git commit -am "Update image tag to ${{ steps.image.outputs.version }}"
+          git commit -am "Update image tag"
           git push -u origin main
       
       - name: Apply Kubernetes manifests
