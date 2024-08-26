@@ -82,8 +82,3 @@ jobs:
           #git commit -am "Update image tag"
           git push -u origin main
 
-      - name: Apply Kubernetes manifests
-        run: |
-          cd k8s-manifest-repo/overlays/dev/
-          kustomize build . > /tmp/kustomize-output.yaml
-          kubectl apply -f /tmp/kustomize-output.yaml          
