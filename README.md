@@ -11,8 +11,8 @@ GitOps 기반 파이프라인 API 서비스 배포
 >
 
 ### EKS 구성도
-<img width="700" alt="eks architecture" src="https://i.postimg.cc/VLBXf0K6/2024-08-27-2-19-06.png">
-</br>
+<img width="950" alt="스크린샷 2024-10-17 오후 3 59 39" src="https://github.com/user-attachments/assets/ba1840f7-883d-4975-aad9-d3031efba2c0">
+
 
 ## :open_file_folder: 주요 기능
 1. IaC
